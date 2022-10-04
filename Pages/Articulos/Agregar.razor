@@ -1,0 +1,59 @@
+﻿@page "/articulos/agregar"
+
+@inject IArticulosServicio _artículosServicio
+@inject NavigationManager _navigationManager
+
+<h3>Agregar Artículo</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Id</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" @bind-value="@articulo.Codigo">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Descripción</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@articulo.Descri" autofocus>
+    </div>
+</div>
+
+<div class="row text-center">
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar" >Cancelar</button>
+</div>
+
+@code {
+    private Articulo articulo { get; set; } = new Articulo();
+    private string Mensaje { get; set; } = "";
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/articulos/index");
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+
+        if (string.IsNullOrEmpty(articulo.Descri))
+        {
+            Mensaje += "No seas pelotudo, ponele una descripción.";
+        }
+
+        if (Mensaje != "") return;
+
+        await _artículosServicio.Agregar(articulo);
+        _navigationManager.NavigateTo("/articulos/index");
+    }
+}

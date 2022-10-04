@@ -1,0 +1,40 @@
+﻿@page "/articulos/index"
+
+@inject IArticulosServicio _articulosServicio;
+@inject NavigationManager _navigationManager
+
+<h1>Articulos</h1>
+
+<br/>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Codigo</th>
+            <th scope="col">Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in listaArticulos)
+        {
+            <tr>
+                <td scope="row">@a.Codigo</td>
+                <td>@a.Descri</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Articulo> listaArticulos { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaArticulos = await _articulosServicio.Listar();
+    }
+    private async Task Agregar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/articulos/agregar");
+    }
+}

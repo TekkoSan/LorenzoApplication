@@ -1,0 +1,57 @@
+﻿@page "/clientes"
+
+@inject IClientesServicio _clientesServicio;
+
+<h1>Clientes</h1>
+
+<br/>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Localidad</th>
+            <th scope="col">Código Postal</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Tipo Iva</th>
+            <th scope="col">CUIT</th>
+            <th scope="col">Reparto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in listaClientes)
+        {
+            <tr>
+                <td scope="row">@c.Id</td>
+                <td>@c.NombreC</td>
+                <td>@c.DirecciónC</td>
+                <td>@c.LocalidadC</td>
+                <td>@c.CodigoPostalC</td>
+                <td>@c.TeléfonoC</td>
+                <td>@c.TIPIVAC</td>
+                <td>@c.CUIT</td>
+                <td>@(c.Reparto?"Sí":"No")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private Cliente cliente { get; set; } = new Cliente();
+    private List<Cliente> listaClientes { get; set; } = new List<Cliente>();
+
+
+    protected override void OnInitialized()
+    {
+        listaClientes = _clientesServicio.Listar();
+    }
+
+    private void AgregarCliente()
+    {
+        _clientesServicio.AgregarCliente(cliente);
+        cliente = new Cliente();
+        listaClientes = _clientesServicio.Listar();
+    }
+}
