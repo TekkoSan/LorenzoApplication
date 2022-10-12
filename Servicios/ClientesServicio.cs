@@ -10,19 +10,19 @@ namespace LorenzoApplication.Servicios
     }
     public class ClientesServicio : IClientesServicio
     {
-        private ClientesContexto Db;
+        private LorenzoContexto Db;
 
-        public ClientesServicio(ClientesContexto clientesContext)
+        public ClientesServicio(LorenzoContexto lorenzoContexto)
         {
-            Db = clientesContext;
+            Db = lorenzoContexto;
         }
         public async Task<bool> AgregarCliente(Cliente cliente)
         {
-            var respuesta = await Db.clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
+            var respuesta = await Db.Clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
             if (respuesta != null) return false;
             else
             {
-                Db.clientes.Add(cliente);
+                Db.Clientes.Add(cliente);
                 await Db.SaveChangesAsync();
                 return true;
             }
@@ -30,7 +30,7 @@ namespace LorenzoApplication.Servicios
 
         public async Task<List<Cliente>> Listar()
         {
-            var respuesta = await Db.clientes.ToListAsync();
+            var respuesta = await Db.Clientes.ToListAsync();
             return respuesta;
         }
     }

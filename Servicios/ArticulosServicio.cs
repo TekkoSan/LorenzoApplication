@@ -10,7 +10,7 @@ namespace LorenzoApplication.Servicios
     {
         public Task<bool> Agregar(Articulo artículo);
         public Task<List<Articulo>> Listar();
-        public Task<Articulo> Leer(string Codigo);
+        public Task<Articulo?> Leer(string Codigo);
         public Task<bool> Eliminar(string Codigo);
         public Task<bool> Modificar(Articulo dato);
     }
@@ -18,19 +18,24 @@ namespace LorenzoApplication.Servicios
 
     public class ArticulosServicio : IArticulosServicio
     {
-        private ArticulosContexto Db;
+        private readonly LorenzoContexto Db;
+        private readonly INumerarServicio _numerarServicio;
 
-        public ArticulosServicio(ArticulosContexto articulosContexto)
+        public ArticulosServicio(LorenzoContexto lorenzoContexto, INumerarServicio numerarServicio)
         {
-            Db = articulosContexto;
+            Db = lorenzoContexto;
+            _numerarServicio = numerarServicio;
         }
-        public async Task<bool> Agregar(Articulo artículo)
+        public async Task<bool> Agregar(Articulo articulo)
         {
-            var respuesta = await Db.Articulo.Where(X => X.Id.Equals(artículo.Id)).FirstOrDefaultAsync();
+            articulo.Codigo = await _numerarServicio.NuevoCodigo("Articulo");
+
+            var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(articulo.Codigo)).FirstOrDefaultAsync();
             if (respuesta != null) return false;
             else
             {
-                Db.Articulo.Add(artículo);
+                articulo = Normalizar(articulo);
+                Db.Articulo.Add(articulo);
                 await Db.SaveChangesAsync();
                 return true;
             }
@@ -41,7 +46,7 @@ namespace LorenzoApplication.Servicios
             var respuesta = await Db.Articulo.ToListAsync();
             return respuesta;
         }
-        public async Task<Articulo> Leer(string codigo)
+        public async Task<Articulo?> Leer(string codigo)
         {
             var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(codigo)).FirstOrDefaultAsync();
             return respuesta;
@@ -60,11 +65,20 @@ namespace LorenzoApplication.Servicios
         public async Task<bool> Modificar(Articulo dato)
         {
             var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
-            if (respuesta != null) return false;
-            respuesta.Descri = dato.Descri;
+            if (respuesta == null) return false;
+         
+            respuesta = Normalizar(respuesta);
+
             Db.Articulo.Update(respuesta);
             await Db.SaveChangesAsync();
             return true;
         }
+
+        static private Articulo Normalizar(Articulo dato)
+        {
+            dato.Descri = dato.Descri.ToUpper();
+            return dato;
+        }
+
     }
 }

@@ -11,14 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddDbContext<ArticulosContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
-builder.Services.AddDbContext<ClientesContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
-builder.Services.AddDbContext<ProveedoresContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
+builder.Services.AddDbContext<LorenzoContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
 
 
 builder.Services.AddScoped<IArticulosServicio, ArticulosServicio>();
 builder.Services.AddScoped<IClientesServicio, ClientesServicio>();
 builder.Services.AddScoped<IProveedoresServicio, ProveedoresServicio>();
+builder.Services.AddScoped<INumerarServicio, NumerarServicio>();
 
 var app = builder.Build();
 

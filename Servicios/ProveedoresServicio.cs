@@ -7,16 +7,16 @@ namespace LorenzoApplication.Servicios
     {
         public Task<bool> Agregar(Provee proveedor);
         public Task<List<Provee>> Listar();
-        public Task<Provee> Leer(string codigo);
+        public Task<Provee?> Leer(string codigo);
         public Task<bool> Eliminar(string codigo);
-        public Task<bool> Modificar(Articulo dato);
+        public Task<bool> Modificar(Provee dato);
     }
     public class ProveedoresServicio : IProveedoresServicio
     {
-        private ProveedoresContexto Db;
-        public ProveedoresServicio(ProveedoresContexto proveedoresContexto)
+        private readonly LorenzoContexto Db;
+        public ProveedoresServicio(LorenzoContexto lorenzoContexto)
         {
-            Db = proveedoresContexto;
+            Db = lorenzoContexto;
         }
         public async Task<bool> Agregar(Provee proveedor)
         {
@@ -34,7 +34,7 @@ namespace LorenzoApplication.Servicios
             var respuesta = await Db.Provee.ToListAsync();
             return respuesta;
         }
-        public async Task<Provee> Leer(string codigo)
+        public async Task<Provee?> Leer(string codigo)
         {
             var respuesta = await Db.Provee.Where(X => X.Codigo.Equals(codigo)).FirstOrDefaultAsync();
             return respuesta;
@@ -53,7 +53,7 @@ namespace LorenzoApplication.Servicios
         public async Task<bool> Modificar(Provee dato)
         {
             var respuesta = await Db.Provee.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
-            if (respuesta != null) return false;
+            if (respuesta == null) return false;
             respuesta.Nombre = dato.Nombre;
             respuesta.Locali = dato.Locali;
             respuesta.Direcc = dato.Direcc;
@@ -64,5 +64,6 @@ namespace LorenzoApplication.Servicios
             await Db.SaveChangesAsync();
             return true;
         }
+
     }
 }

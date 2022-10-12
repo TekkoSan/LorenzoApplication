@@ -9,8 +9,9 @@
         public string Locali { get; set; }
         public string CodPos { get; set; }
         public string Telefo { get; set; }
-        public string TIPIVA { get; set; }
-        public string CUIT { get; set; }
+        public string Tipiva { get; set; } // 1-Responsable Inscripto, 2-Monotributo, 3-Excento
+        public string Cuit { get; set; }
+        public string Reparto { get; set; }   
 
         public Provee()
         {
@@ -21,8 +22,9 @@
             Locali = "";
             CodPos = "";
             Telefo = "";
-            TIPIVA = "";
-            CUIT = "";
+            Tipiva = "";
+            Cuit = "";
+            Reparto = "";
         }
     }
 }
