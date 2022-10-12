@@ -1,4 +1,5 @@
 using LorenzoApplication;
+using LorenzoApplication.Modelos;
 using LorenzoApplication.Servicios;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -11,6 +12,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ArticulosContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
+builder.Services.AddDbContext<ClientesContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
+builder.Services.AddDbContext<ProveedoresContexto>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Lorenzo")));
+
 
 builder.Services.AddScoped<IArticulosServicio, ArticulosServicio>();
 builder.Services.AddScoped<IClientesServicio, ClientesServicio>();

@@ -1,0 +1,103 @@
+﻿@page "/clientes/agregar"
+
+@inject IClientesServicio _clientesServicio
+@inject NavigationManager _navigationManager
+
+<h3>Agregar Cliente</h3>>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Id</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Codigo">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Nombre</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Nombre" autofocus>
+    </div>
+</div>
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Direcc</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Direcc">
+    </div>
+</div>
+
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Código Postal</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Codpos">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Localidad</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Locali">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Teléfono</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.Telefo">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Tipo de IVA</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.TIPIVA">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">CUIT</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@cliente.CUIT">
+    </div>
+</div>
+
+
+
+
+<div class="row text-center">
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</div>
+
+@code {
+    private Cliente cliente { get; set; } = new Cliente();
+    private string Mensaje { get; set; } = "";
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/clientes/index");
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+
+        if (string.IsNullOrEmpty(cliente.Nombre))
+        {
+            Mensaje += "No seas pelotudo, pone un nombre.";
+        }
+if (Mensaje != "") return;
+
+        await _clientesServicio.AgregarCliente(cliente);
+        _navigationManager.NavigateTo("/clientes/index");
+    }
+}

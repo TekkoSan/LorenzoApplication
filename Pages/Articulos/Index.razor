@@ -7,11 +7,14 @@
 
 <br/>
 
+<button class="btn btn-primary" @onclick="Agregar">Agregar</button>
+
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Codigo</th>
             <th scope="col">Descripción</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,11 +23,12 @@
             <tr>
                 <td scope="row">@a.Codigo</td>
                 <td>@a.Descri</td>
+                <td><a href="/articulos/eliminar/@a.Codigo">Eliminar</a> </td>
+                <td><a href="/articulos/modificar/@a.Codigo">Modificar</a> </td>
             </tr>
         }
     </tbody>
 </table>
-
 @code {
     private List<Articulo> listaArticulos { get; set; } = null;
 

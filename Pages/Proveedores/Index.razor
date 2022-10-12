@@ -1,0 +1,54 @@
+﻿@page "/proveedores/index"
+
+@inject IProveedoresServicio _proveedoresServicio;
+@inject NavigationManager _navigationManager;
+
+<h1>Proovedores</h1>
+
+<br/>
+
+<button class="btn btn-primary" @onclick="Agregar">Agregar</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Codigo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Direcc</th>
+            <th scope="col">Locali</th>
+            <th scope="col">Código Postal</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Tipo de IVA</th>
+            <th scope="col">CUIT</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in listaProovedores)
+        {
+            <tr>
+                <td scope="row">@a.Codigo</td>
+                <td>@a.Nombre</td>
+                <td>@a.Direcc</td>
+                <td>@a.Locali</td>
+                <td>@a.CodPos</td>
+                <td>@a.Telefo</td>
+                <td>@a.TIPIVA</td>
+                <td>@a.CUIT</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Provee> listaProovedores { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaProovedores = await _proveedoresServicio.Listar();
+    }
+    private async Task Agregar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/proveedores/agregar");
+    }
+}

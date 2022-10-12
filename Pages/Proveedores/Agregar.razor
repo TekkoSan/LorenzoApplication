@@ -1,0 +1,99 @@
+﻿@page "/proveedores/agregar"
+
+@inject IProveedoresServicio _proveedoresServicio
+@inject NavigationManager _navigationManager
+
+<h3>Agregar Proveedor</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Id</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.Codigo">
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Nombre</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.Nombre" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Dirección</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.Direcc" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Localidad</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.Locali" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Código Postal</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.CodPos" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Teléfono</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.Telefo" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Tipo de IVA</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.TIPIVA" autofocus>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">C.U.I.L.</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" @bind-value="@proveedor.CUIT" autofocus>
+    </div>
+</div>
+
+<button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+<button class="btn btn-secondary" @onclick="Cancelar" >Cancelar</button>
+
+@code {
+    private Provee proveedor { get; set; } = new Provee();
+    private string Mensaje { get; set; } = "";
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/proveedores/index");
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+
+        if (string.IsNullOrEmpty(proveedor.Nombre))
+        {
+            Mensaje += "No seas pelotudo, ponele nombre.";
+        }
+
+        if (Mensaje != "") return;
+
+        await _proveedoresServicio.Agregar(proveedor);
+        _navigationManager.NavigateTo("/proveedores/index");
+    }
+}

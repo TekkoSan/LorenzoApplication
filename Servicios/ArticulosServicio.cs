@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LorenzoApplication.Modelos;
+using LorenzoApplication.Servicios;
+using LorenzoApplication;
 
 namespace LorenzoApplication.Servicios
 {
@@ -8,6 +10,9 @@ namespace LorenzoApplication.Servicios
     {
         public Task<bool> Agregar(Articulo artículo);
         public Task<List<Articulo>> Listar();
+        public Task<Articulo> Leer(string Codigo);
+        public Task<bool> Eliminar(string Codigo);
+        public Task<bool> Modificar(Articulo dato);
     }
 
 
@@ -35,6 +40,31 @@ namespace LorenzoApplication.Servicios
         {
             var respuesta = await Db.Articulo.ToListAsync();
             return respuesta;
+        }
+        public async Task<Articulo> Leer(string codigo)
+        {
+            var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(codigo)).FirstOrDefaultAsync();
+            return respuesta;
+        }
+        public async Task<bool> Eliminar(string codigo)
+        {
+            var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(codigo)).FirstOrDefaultAsync();
+            if (respuesta == null) return false;
+            else
+            {
+                Db.Articulo.Remove(respuesta);
+                await Db.SaveChangesAsync();
+                return true;
+            }
+        }
+        public async Task<bool> Modificar(Articulo dato)
+        {
+            var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
+            if (respuesta != null) return false;
+            respuesta.Descri = dato.Descri;
+            Db.Articulo.Update(respuesta);
+            await Db.SaveChangesAsync();
+            return true;
         }
     }
 }

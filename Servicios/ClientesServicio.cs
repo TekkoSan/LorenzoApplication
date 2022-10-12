@@ -1,22 +1,37 @@
-﻿using LorenzoApplication.Modelos;
+﻿using Microsoft.EntityFrameworkCore;
+using LorenzoApplication.Modelos;
 
 namespace LorenzoApplication.Servicios
 {
     public interface IClientesServicio
     {
-        public List<Cliente> Listar();
-        public void AgregarCliente(Cliente cliente);
+        public Task<List<Cliente>> Listar();
+        public Task<bool> AgregarCliente(Cliente cliente);
     }
     public class ClientesServicio : IClientesServicio
     {
-        private List<Cliente> listaClientes = new List<Cliente>();
-        public void AgregarCliente(Cliente cliente)
+        private ClientesContexto Db;
+
+        public ClientesServicio(ClientesContexto clientesContext)
         {
-           listaClientes.Add(cliente);
+            Db = clientesContext;
         }
-        public List<Cliente> Listar()
+        public async Task<bool> AgregarCliente(Cliente cliente)
         {
-            return listaClientes;
+            var respuesta = await Db.clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
+            if (respuesta != null) return false;
+            else
+            {
+                Db.clientes.Add(cliente);
+                await Db.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task<List<Cliente>> Listar()
+        {
+            var respuesta = await Db.clientes.ToListAsync();
+            return respuesta;
         }
     }
 }

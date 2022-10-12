@@ -1,6 +1,7 @@
-﻿@page "/clientes"
+﻿@page "/clientes/index"
 
 @inject IClientesServicio _clientesServicio;
+@inject NavigationManager _navigationManager
 
 <h1>Clientes</h1>
 
@@ -11,6 +12,7 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Nombre</th>
+            <th scope="col">Código</th>
             <th scope="col">Direccion</th>
             <th scope="col">Localidad</th>
             <th scope="col">Código Postal</th>
@@ -25,33 +27,30 @@
         {
             <tr>
                 <td scope="row">@c.Id</td>
-                <td>@c.NombreC</td>
-                <td>@c.DirecciónC</td>
-                <td>@c.LocalidadC</td>
-                <td>@c.CodigoPostalC</td>
-                <td>@c.TeléfonoC</td>
-                <td>@c.TIPIVAC</td>
+                <td>@c.Nombre</td>
+                <td>@c.Codigo</td>
+                <td>@c.Direcc</td>
+                <td>@c.Locali</td>
+                <td>@c.Codpos</td>
+                <td>@c.Telefo</td>
+                <td>@c.TIPIVA</td>
                 <td>@c.CUIT</td>
-                <td>@(c.Reparto?"Sí":"No")</td>
+                <td>@c.Reparto</td>
             </tr>
         }
     </tbody>
 </table>
 
 @code {
-    private Cliente cliente { get; set; } = new Cliente();
-    private List<Cliente> listaClientes { get; set; } = new List<Cliente>();
+    private List<Cliente> listaClientes { get; set; } = null;
 
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        listaClientes = _clientesServicio.Listar();
+        listaClientes = await _clientesServicio.Listar();
     }
-
-    private void AgregarCliente()
+    private async Task AgregarCliente()
     {
-        _clientesServicio.AgregarCliente(cliente);
-        cliente = new Cliente();
-        listaClientes = _clientesServicio.Listar();
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/clientes/agregar");
     }
 }
