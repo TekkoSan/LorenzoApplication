@@ -58,12 +58,11 @@ namespace LorenzoApplication.Servicios
             respuesta.Locali = dato.Locali;
             respuesta.Direcc = dato.Direcc;
             respuesta.CodPos = dato.CodPos;
-            respuesta.TIPIVA = dato.TIPIVA;
-            respuesta.CUIT = dato.CUIT;
+            respuesta.Tipiva = dato.Tipiva;
+            respuesta.Cuit = dato.Cuit;
             Db.Provee.Update(respuesta);
             await Db.SaveChangesAsync();
             return true;
         }
-
     }
 }

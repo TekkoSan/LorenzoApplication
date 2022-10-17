@@ -1,0 +1,119 @@
+﻿@page "/proveedores/modificar/{Codigo}"
+@inject NavigationManager _navigationManager
+@inject IProveedoresServicio _proveedoresServicio
+
+<h3>Modificar Proveedor</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+@if (Proveedor == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Cargando...
+    </div>
+}
+
+else
+{
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Código</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Codigo" readonly>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Nombre" autofocus>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Direcc">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Locali">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.CodPos">
+        </div>
+    </div>
+    
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Telefo">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Tipiva">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Proveedor.Cuit">
+        </div>
+    </div>
+
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+}
+
+
+@code {
+    [Parameter]
+    public string Codigo { get; set; } = "";
+
+    private Provee Proveedor { get; set; } = null;
+    private string Mensaje { get; set; } = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Proveedor = await _proveedoresServicio.Leer(Codigo);
+    }
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/proveedores/index");
+
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+
+        if (string.IsNullOrEmpty(Proveedor.Nombre))
+        {
+            Mensaje = "¡El nombre del artículo esta Incorrecto!";
+        }
+
+        if (Mensaje != "") return;
+
+        await _proveedoresServicio.Modificar(Proveedor);
+        _navigationManager.NavigateTo("/proveedores/index");
+    }
+
+}

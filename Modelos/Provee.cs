@@ -11,7 +11,6 @@
         public string Telefo { get; set; }
         public string Tipiva { get; set; } // 1-Responsable Inscripto, 2-Monotributo, 3-Excento
         public string Cuit { get; set; }
-        public string Reparto { get; set; }   
 
         public Provee()
         {
@@ -24,7 +23,6 @@
             Telefo = "";
             Tipiva = "";
             Cuit = "";
-            Reparto = "";
         }
     }
 }

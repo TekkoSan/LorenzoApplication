@@ -19,7 +19,9 @@
             <th scope="col">Código Postal</th>
             <th scope="col">Teléfono</th>
             <th scope="col">Tipo de IVA</th>
-            <th scope="col">CUIT</th>
+            <th scope="col">CUIT/CUIL</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,8 +34,10 @@
                 <td>@a.Locali</td>
                 <td>@a.CodPos</td>
                 <td>@a.Telefo</td>
-                <td>@a.TIPIVA</td>
-                <td>@a.CUIT</td>
+                <td>@a.Tipiva</td>
+                <td>@a.Cuit</td>
+                <td><a href="/proveedores/eliminar/@a.Codigo">Eliminar</a></td>
+                <td><a href="/proveedores/modificar/@a.Codigo">Modificar</a></td>
             </tr>
         }
     </tbody>

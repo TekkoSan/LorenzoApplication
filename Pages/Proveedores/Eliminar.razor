@@ -1,0 +1,114 @@
+﻿@page "/proveedores/eliminar/{Codigo}"
+@inject NavigationManager _navigationManager
+@inject IProveedoresServicio _proveedoresServicio
+
+<h3>Eliminar Proveedor</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+@if (Proveedor == null)
+{
+    {
+        <div class="alert alert-warning" role="alert">
+            Cargando...
+        </div>
+    }
+}
+
+else
+{
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Codigo</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" @bind-value="@Proveedor.Codigo">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Nombre</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Nombre">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Dirección</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Direcc">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Localidad</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Locali">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Código Postal</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.CodPos">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Teléfono</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Telefo">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Tipo de IVA</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Tipiva">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">C.U.I.L</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Proveedor.Cuit">
+        </div>
+    </div>
+
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+}
+
+
+@code {
+    [Parameter]
+    public string codigo { get; set; } = "";
+
+    private Provee Proveedor { get; set; } = null;
+    private string Mensaje { get; set; } = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Proveedor = await _proveedoresServicio.Leer(codigo);
+    }
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/articulos/index");
+
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+        if (Mensaje != "") return;
+
+        await _proveedoresServicio.Eliminar(Proveedor.Codigo);
+        _navigationManager.NavigateTo("/proveedores/index");
+    }
+
+}

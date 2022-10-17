@@ -12,6 +12,5 @@
             Numerador = string.Empty;
             Valor = 0;
         }
-
     }
 }
