@@ -43,12 +43,13 @@ else
     [Parameter]
     public string Codigo { get; set; } = "";
 
-    private Articulo Articulo { get; set; } = null;
+    private Articulo Articulo { get; set; }
+
     private string Mensaje { get; set; } = "";
 
     protected override async Task OnParametersSetAsync()
     {
-        Articulo = await _articulosServicio.Leer(Codigo);
+        Articulo = await _articulosServicio.Leer(Codigo) ?? new Articulo(); 
     }
 
 

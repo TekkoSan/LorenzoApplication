@@ -19,6 +19,8 @@ namespace LorenzoApplication
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Numerar> Numerar { get; set; }
         public DbSet<Provee> Provee { get; set; }
+        public DbSet<Cmp_Ven> Cmp_Ven { get; set; }
+        public DbSet<Ven_Fac> Ven_Fac { get; set; }
 
     }
 }

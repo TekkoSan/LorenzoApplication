@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using LorenzoApplication.Modelos;
-using LorenzoApplication.Servicios;
-using LorenzoApplication;
+﻿using LorenzoApplication.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace LorenzoApplication.Servicios
 {
@@ -66,7 +64,7 @@ namespace LorenzoApplication.Servicios
         {
             var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
             if (respuesta == null) return false;
-         
+
             respuesta = Normalizar(respuesta);
 
             Db.Articulo.Update(respuesta);

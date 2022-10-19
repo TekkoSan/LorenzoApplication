@@ -1,4 +1,4 @@
-﻿@page "/articulos/modificar/{Codigo}"
+﻿@page "/clientes/modificar/{Codigo}"
 @inject NavigationManager _navigationManager
 @inject IArticulosServicio _articulosServicio
 
@@ -48,7 +48,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        Articulo = await _articulosServicio.Leer(Codigo);
+        Articulo = await _articulosServicio.Leer(Codigo) ?? new Articulo();
     }
 
 

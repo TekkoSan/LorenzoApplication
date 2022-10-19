@@ -1,4 +1,4 @@
-﻿@page "/articulos/eliminar/{Codigo}"
+﻿@page "/clientes/eliminar/{Codigo}"
 @inject NavigationManager _navigationManager
 @inject IArticulosServicio _articulosServicio
 
@@ -51,12 +51,12 @@ else
     [Parameter]
     public string codigo { get; set; } = "";
 
-    private Articulo Articulo { get; set; } = null;
+    private Articulo Articulo { get; set; }
     private string Mensaje { get; set; } = "";
 
     protected override async Task OnParametersSetAsync()
     {
-        Articulo = await _articulosServicio.Leer(codigo);
+        Articulo = await _articulosServicio.Leer(codigo) ?? new Articulo();
     }
 
 

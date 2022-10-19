@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LorenzoApplication.ModeloDto;
 using LorenzoApplication.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace LorenzoApplication.Servicios
 {
     public interface IClientesServicio
     {
+        public Task<List<ClienteDto>> CargarCombo();
         public Task<List<Cliente>> Listar();
         public Task<bool> AgregarCliente(Cliente cliente);
-        public Task<Cliente> Leer(string cliente);
+        public Task<Cliente?> Leer(string cliente);
         public Task<bool> Eliminar(string codigo);
         public Task<bool> Modificar(Cliente cliente);
     }
@@ -19,6 +21,10 @@ namespace LorenzoApplication.Servicios
         {
             Db = lorenzoContexto;
         }
+
+
+
+
         public async Task<bool> AgregarCliente(Cliente cliente)
         {
             var respuesta = await Db.Clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
@@ -73,6 +79,17 @@ namespace LorenzoApplication.Servicios
         {
             dato.Nombre = dato.Nombre.ToUpper();
             return dato;
+        }
+
+        public async Task<List<ClienteDto>> CargarCombo()
+        {
+            List<ClienteDto> respuesta = new List<ClienteDto>();
+            var Lista = await Listar();
+            foreach(var X in Lista)
+            {
+                respuesta.Add(new ClienteDto() { Codigo = X.Codigo, Nombre = X.Nombre });
+            }
+            return respuesta;
         }
     }
 }

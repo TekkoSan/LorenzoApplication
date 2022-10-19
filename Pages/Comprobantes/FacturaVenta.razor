@@ -1,0 +1,120 @@
+﻿@page "/comprobantes/facturaventa"
+@inject IClientesServicio _clienteServicio
+
+
+<h3>FacturaVenta</h3>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Fecha</label>
+    <div class="col-sm-10">
+        <input type="date" class="form-control" @bind-value="@factura.Fecha">
+    </div>
+
+    @if (!BuscarCliente)
+    {
+        <label class="col-sm-2 col-form-label">Cliente</label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-2">
+                    <input type="text"
+                       class="form-control"
+                       value="@factura.Cliente"
+                       @onchange="facturaClienteOnChange" />
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-secondary" @onclick="MostrarComboCliente">Buscar</button>
+                </div>
+                <div class="col-8">
+                    <label class="col-form-label">@factura.NombreCliente</label>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <label class="col-sm-2 col-form-label">Cliente</label>
+        <div class="col-sm-10">
+
+            <select class="form-select" @onchange="OnChangeComboCliente">
+                @foreach (var Op in factura.clientes)
+                {
+                    @if (factura.Cliente == Op.Codigo)
+                    {
+                        <option selected value="@Op.Codigo">@Op.Nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@Op.Codigo">@Op.Nombre</option>
+                    }
+                }
+            </select>
+        </div>
+
+    }
+
+
+
+</div>
+
+
+@code {
+    private FacturaVentaDto factura { get; set; } = new FacturaVentaDto();
+    private bool BuscarCliente { get; set; } = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        factura.Fecha = DateTime.Now.Date;
+        factura.clientes = await _clienteServicio.CargarCombo();
+    }
+
+    private async Task MostrarComboCliente()
+    {
+        BuscarCliente = true;
+    }
+
+    private async Task OnChangeComboCliente(ChangeEventArgs e)
+    {
+        factura.Cliente = e.Value.ToString();
+        var Cl = await _clienteServicio.Leer(factura.Cliente);
+        if (Cl != null)
+            factura.NombreCliente = Cl.Nombre;
+        else
+            factura.NombreCliente = "";
+        BuscarCliente = false;
+
+    }
+
+
+    private async Task facturaClienteOnChange(ChangeEventArgs args)
+    {
+
+        if (args.Value == null)
+            factura.Cliente = "";
+        else
+            factura.Cliente = FormatoCodigo(args.Value.ToString());
+
+        if (factura.Cliente != "")
+        {
+            var X = await _clienteServicio.Leer(factura.Cliente);
+            if (X != null)
+                factura.NombreCliente = X.Nombre;
+            else
+                factura.NombreCliente = "";
+
+        }
+    }
+
+    private string FormatoCodigo(string? Valor)
+    {
+        if (Valor == null) Valor = "";
+
+        string respuesta = "";
+
+        int X = int.Parse(Valor);
+        respuesta = X.ToString("D4");
+        return respuesta;
+    }
+
+
+}

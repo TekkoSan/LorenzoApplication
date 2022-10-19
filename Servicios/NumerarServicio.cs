@@ -14,7 +14,7 @@ namespace LorenzoApplication.Servicios
     {
 
         private readonly LorenzoContexto _db;
-        public NumerarServicio(LorenzoContexto db) 
+        public NumerarServicio(LorenzoContexto db)
         {
             _db = db;
         }
