@@ -1,0 +1,79 @@
+﻿@page "/articulos/eliminar/{Codigo}"
+@inject NavigationManager _navigationManager
+@inject IArticulosServicio _articulosServicio
+
+<h3>Eliminar Articulo</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+@if (Articulo == null)
+{
+    {
+        <div class="alert alert-warning" role="alert">
+            Cargando...
+        </div>
+    }
+}
+
+else
+{
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Id</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" @bind-value="@Articulo.Id">
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Nombre</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" @bind-value="@Articulo.Codigo" autofocus>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Precio</label>
+        <div class="col-sm-10">
+            <input type="number" readonly class="form-control-plaintext" @bind-value="@Articulo.Descri">
+        </div>
+    </div>
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+}
+
+
+@code {
+    [Parameter]
+    public string codigo { get; set; } = "";
+
+    private Articulo Articulo { get; set; } = null;
+    private string Mensaje { get; set; } = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Articulo = await _articulosServicio.Leer(codigo);
+    }
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/articulos/index");
+
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+        if (Mensaje != "") return;
+
+        await _articulosServicio.Eliminar(Articulo.Codigo);
+        _navigationManager.NavigateTo("/articulos/index");
+    }
+
+}

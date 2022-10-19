@@ -1,0 +1,77 @@
+﻿@page "/articulos/modificar/{Codigo}"
+@inject NavigationManager _navigationManager
+@inject IArticulosServicio _articulosServicio
+
+<h3>Modificar Articulo</h3>
+
+@if (Mensaje != "")
+{
+    <div class="alert alert-danger" role="alert">
+        @Mensaje
+    </div>
+}
+
+@if (Articulo == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Cargando...
+    </div>
+}
+
+else
+{
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Código</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Articulo.Codigo" readonly>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind-value="@Articulo.Descri" autofocus>
+        </div>
+    </div>
+
+    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+}
+
+
+@code {
+    [Parameter]
+    public string Codigo { get; set; } = "";
+
+    private Articulo Articulo { get; set; } = null;
+    private string Mensaje { get; set; } = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Articulo = await _articulosServicio.Leer(Codigo);
+    }
+
+
+    private async Task Cancelar()
+    {
+        await Task.Delay(1);
+        _navigationManager.NavigateTo("/articulos/index");
+
+    }
+
+    private async Task Aceptar()
+    {
+        Mensaje = "";
+
+        if (string.IsNullOrEmpty(Articulo.Descri))
+        {
+            Mensaje = "¡El nombre del artículo esta Incorrecto!";
+        }
+
+        if (Mensaje != "") return;
+
+        await _articulosServicio.Modificar(Articulo);
+        _navigationManager.NavigateTo("/articulos/index");
+    }
+
+}
