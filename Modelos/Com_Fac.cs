@@ -1,6 +1,6 @@
 ﻿namespace LorenzoApplication.Modelos
 {
-    public class Ven_Fac
+    public class Com_Fac
     {
         public int Id { get; set; }
         public string Codigo { get; set; }
@@ -9,7 +9,7 @@
         public string Articulo { get; set; }
         public double Peso { get; set; }
         public double Precio { get; set; }
-        public Ven_Fac()
+        public Com_Fac()
         {
             Id = 0;
             Codigo = string.Empty;

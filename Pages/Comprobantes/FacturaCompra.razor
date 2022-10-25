@@ -1,7 +1,5 @@
-﻿@page "/comprobantes/facturaventa"
-@using LorenzoApplication.ModeloDto
-@using LorenzoApplication.Servicio
-@inject IClientesServicio _clienteServicio
+﻿@page "/comprobantes/facturacompra"
+@inject IProveedoresServicio _proveedoresServicio
 
 
 <h3>FacturaVenta</h3>
@@ -12,7 +10,7 @@
         <input type="date" class="form-control" @bind-value="@factura.Fecha">
     </div>
 
-    @if (!BuscarCliente)
+    @if (!BuscarProveedor)
     {
         <label class="col-sm-2 col-form-label">Cliente</label>
         <div class="col-sm-10">
@@ -20,14 +18,14 @@
                 <div class="col-2">
                     <input type="text"
                        class="form-control"
-                       value="@factura.Cliente"
-                       @onchange="facturaClienteOnChange" />
+                       value="@factura.Provee"
+                       @onchange="facturaProveedoresOnChange" />
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-secondary" @onclick="MostrarComboCliente">Buscar</button>
+                    <button class="btn btn-secondary" @onclick="MostrarComboProveedor">Buscar</button>
                 </div>
                 <div class="col-8">
-                    <label class="col-form-label">@factura.NombreCliente</label>
+                    <label class="col-form-label">@factura.NombreProveedor</label>
                 </div>
             </div>
         </div>
@@ -37,10 +35,10 @@
         <label class="col-sm-2 col-form-label">Cliente</label>
         <div class="col-sm-10">
 
-            <select class="form-select" @onchange="OnChangeComboCliente">
-                @foreach (var Op in factura.clientes)
+            <select class="form-select" @onchange="OnChangeComboProveedor">
+                @foreach (var Op in factura.proveedores)
                 {
-                    @if (factura.Cliente == Op.Codigo)
+                    @if (factura.Provee == Op.Codigo)
                     {
                         <option selected value="@Op.Codigo">@Op.Nombre</option>
                     }
@@ -60,50 +58,48 @@
 
 
 @code {
-    private FacturaVentaDto factura { get; set; } = new FacturaVentaDto();
-    private bool BuscarCliente { get; set; } = false;
+    private FacturaCompraDto factura { get; set; } = new FacturaCompraDto();
+    private bool BuscarProveedor { get; set; } = false;
 
 
     protected override async Task OnInitializedAsync()
     {
         factura.Fecha = DateTime.Now.Date;
-        factura.clientes = await _clienteServicio.CargarCombo();
+        factura.proveedores = await _proveedoresServicio.CargarCombo();
     }
 
-    private async Task MostrarComboCliente()
+    private async Task MostrarComboProveedor()
     {
         await Task.Delay(1);
-        BuscarCliente = true;
+        BuscarProveedor = true;
     }
 
-    private async Task OnChangeComboCliente(ChangeEventArgs e)
+    private async Task OnChangeComboProveedor(ChangeEventArgs e)
     {
-        factura.Cliente = e.Value.ToString();
-        var Cl = await _clienteServicio.Leer(factura.Cliente);
+        factura.Provee = e.Value.ToString();
+        var Cl = await _proveedoresServicio.Leer(factura.Provee);
         if (Cl != null)
-            factura.NombreCliente = Cl.Nombre;
+            factura.NombreProveedor = Cl.Nombre;
         else
-            factura.NombreCliente = "";
-        BuscarCliente = false;
+            factura.NombreProveedor = "";
+        BuscarProveedor = false;
 
     }
-
-
-    private async Task facturaClienteOnChange(ChangeEventArgs args)
+    private async Task facturaProveedoresOnChange(ChangeEventArgs args)
     {
 
         if (args.Value == null)
-            factura.Cliente = "";
+            factura.Provee = "";
         else
-            factura.Cliente = FormatoCodigo(args.Value.ToString());
+            factura.Provee = FormatoCodigo(args.Value.ToString());
 
-        if (factura.Cliente != "")
+        if (factura.Provee != "")
         {
-            var X = await _clienteServicio.Leer(factura.Cliente);
+            var X = await _proveedoresServicio.Leer(factura.Provee);
             if (X != null)
-                factura.NombreCliente = X.Nombre;
+                factura.NombreProveedor = X.Nombre;
             else
-                factura.NombreCliente = "";
+                factura.NombreProveedor = "";
 
         }
     }

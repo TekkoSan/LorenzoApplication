@@ -1,10 +1,12 @@
-﻿using LorenzoApplication.Modelos;
+﻿using LorenzoApplication.ModeloDto;
+using LorenzoApplication.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace LorenzoApplication.Servicios
 {
     public interface IProveedoresServicio
     {
+        public Task<List<ProveeDto>> CargarCombo();
         public Task<bool> Agregar(Provee proveedor);
         public Task<List<Provee>> Listar();
         public Task<Provee?> Leer(string codigo);
@@ -63,6 +65,17 @@ namespace LorenzoApplication.Servicios
             Db.Provee.Update(respuesta);
             await Db.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<ProveeDto>> CargarCombo()
+        {
+            List<ProveeDto> respuesta = new List<ProveeDto>();
+            var lista = await Listar();
+            foreach (var X in lista)
+            {
+                respuesta.Add(new ProveeDto() { Codigo = X.Codigo, Nombre = X.Nombre });
+            }
+            return respuesta;
         }
     }
 }

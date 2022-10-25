@@ -1,24 +1,18 @@
 ﻿using LorenzoApplication.Modelos;
 using Microsoft.EntityFrameworkCore;
-
 namespace LorenzoApplication.Servicios
 {
-
     public interface INumerarServicio
     {
         Task<string> NuevoCodigo(string numerador);
-
     }
-
     public class NumerarServicio : INumerarServicio
     {
-
         private readonly LorenzoContexto _db;
         public NumerarServicio(LorenzoContexto db)
         {
             _db = db;
         }
-
         public async Task<string> NuevoCodigo(string numerador)
         {
             numerador = numerador.ToUpper();

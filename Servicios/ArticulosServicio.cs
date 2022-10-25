@@ -1,9 +1,7 @@
 ﻿using LorenzoApplication.Modelos;
 using Microsoft.EntityFrameworkCore;
-
 namespace LorenzoApplication.Servicios
 {
-
     public interface IArticulosServicio
     {
         public Task<bool> Agregar(Articulo artículo);
@@ -12,13 +10,10 @@ namespace LorenzoApplication.Servicios
         public Task<bool> Eliminar(string Codigo);
         public Task<bool> Modificar(Articulo dato);
     }
-
-
     public class ArticulosServicio : IArticulosServicio
     {
         private readonly LorenzoContexto Db;
         private readonly INumerarServicio _numerarServicio;
-
         public ArticulosServicio(LorenzoContexto lorenzoContexto, INumerarServicio numerarServicio)
         {
             Db = lorenzoContexto;
@@ -27,7 +22,6 @@ namespace LorenzoApplication.Servicios
         public async Task<bool> Agregar(Articulo articulo)
         {
             articulo.Codigo = await _numerarServicio.NuevoCodigo("Articulo");
-
             var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(articulo.Codigo)).FirstOrDefaultAsync();
             if (respuesta != null) return false;
             else
@@ -38,7 +32,6 @@ namespace LorenzoApplication.Servicios
                 return true;
             }
         }
-
         public async Task<List<Articulo>> Listar()
         {
             var respuesta = await Db.Articulo.ToListAsync();
@@ -64,19 +57,15 @@ namespace LorenzoApplication.Servicios
         {
             var respuesta = await Db.Articulo.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
             if (respuesta == null) return false;
-
             respuesta = Normalizar(respuesta);
-
             Db.Articulo.Update(respuesta);
             await Db.SaveChangesAsync();
             return true;
         }
-
         static private Articulo Normalizar(Articulo dato)
         {
             dato.Descri = dato.Descri.ToUpper();
             return dato;
         }
-
     }
 }
