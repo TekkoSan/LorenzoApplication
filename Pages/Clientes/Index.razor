@@ -1,4 +1,5 @@
 ﻿@page "/clientes/index"
+@using LorenzoApplication.Servicio
 
 @inject IClientesServicio _clientesServicio;
 @inject NavigationManager _navigationManager
@@ -10,32 +11,28 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
             <th scope="col">Código</th>
-            <th scope="col">Direccion</th>
-            <th scope="col">Localidad</th>
+            <th scope="col">Nombre</th>
             <th scope="col">Código Postal</th>
             <th scope="col">Telefono</th>
             <th scope="col">Tipo Iva</th>
-            <th scope="col">CUIT</th>
             <th scope="col">Reparto</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var c in listaClientes)
         {
             <tr>
-                <td scope="row">@c.Id</td>
-                <td>@c.Nombre</td>
                 <td>@c.Codigo</td>
-                <td>@c.Direcc</td>
-                <td>@c.Locali</td>
+                <td>@c.Nombre</td>
                 <td>@c.Codpos</td>
                 <td>@c.Telefo</td>
                 <td>@c.TIPIVA</td>
-                <td>@c.CUIT</td>
                 <td>@c.Reparto</td>
+                <td><a href="/clientes/eliminar/@c.Codigo">Eliminar</a></td>
+                <td><a href="/clientes/modificar/@c.Codigo">Modificar</a></td>
             </tr>
         }
     </tbody>

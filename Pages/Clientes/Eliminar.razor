@@ -1,6 +1,7 @@
 ﻿@page "/clientes/eliminar/{Codigo}"
+@using LorenzoApplication.Servicio
 @inject NavigationManager _navigationManager
-@inject IArticulosServicio _articulosServicio
+@inject IClientesServicio _clientesServicio
 
 <h3>Eliminar Articulo</h3>
 
@@ -11,7 +12,7 @@
     </div>
 }
 
-@if (Articulo == null)
+@if (cliente == null)
 {
     {
         <div class="alert alert-warning" role="alert">
@@ -25,23 +26,17 @@ else
     <div class="mb-3 row">
         <label class="col-sm-2 col-form-label">Id</label>
         <div class="col-sm-10">
-            <input type="text" readonly class="form-control-plaintext" @bind-value="@Articulo.Id">
+            <input type="text" readonly class="form-control-plaintext" @bind-value="@cliente.Codigo">
         </div>
     </div>
 
     <div class="mb-3 row">
         <label class="col-sm-2 col-form-label">Nombre</label>
         <div class="col-sm-10">
-            <input type="text" readonly class="form-control-plaintext" @bind-value="@Articulo.Codigo" autofocus>
+            <input type="text" readonly class="form-control-plaintext" @bind-value="@cliente.Nombre">
         </div>
     </div>
 
-    <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Precio</label>
-        <div class="col-sm-10">
-            <input type="number" readonly class="form-control-plaintext" @bind-value="@Articulo.Descri">
-        </div>
-    </div>
     <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
     <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 }
@@ -51,19 +46,19 @@ else
     [Parameter]
     public string codigo { get; set; } = "";
 
-    private Articulo Articulo { get; set; }
+    private Cliente cliente { get; set; }
     private string Mensaje { get; set; } = "";
 
     protected override async Task OnParametersSetAsync()
     {
-        Articulo = await _articulosServicio.Leer(codigo) ?? new Articulo();
+        cliente = await _clientesServicio.Leer(codigo) ?? new Cliente();
     }
 
 
     private async Task Cancelar()
     {
         await Task.Delay(1);
-        _navigationManager.NavigateTo("/articulos/index");
+        _navigationManager.NavigateTo("/clientes/index");
 
     }
 
@@ -72,8 +67,8 @@ else
         Mensaje = "";
         if (Mensaje != "") return;
 
-        await _articulosServicio.Eliminar(Articulo.Codigo);
-        _navigationManager.NavigateTo("/articulos/index");
+        await _clientesServicio.Eliminar(cliente.Codigo);
+        _navigationManager.NavigateTo("/clientes/index");
     }
 
 }

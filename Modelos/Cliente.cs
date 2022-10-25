@@ -1,4 +1,5 @@
-﻿namespace LorenzoApplication.Modelos
+﻿using LorenzoApplication.Servicios;
+namespace LorenzoApplication.Modelos
 {
     public class Cliente
     {
