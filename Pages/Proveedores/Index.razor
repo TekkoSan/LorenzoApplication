@@ -3,13 +3,18 @@
 @inject IProveedoresServicio _proveedoresServicio;
 @inject NavigationManager _navigationManager;
 
+<PageTitle>Proveedores</PageTitle>
+
 <h1>Proovedores</h1>
 
 <br/>
 
 <button class="btn btn-primary" @onclick="Agregar">Agregar</button>
 
-<table class="table">
+<br/>
+<br/>
+
+<table class="table table-hover table-bordered">
     <thead>
         <tr>
             <th scope="col">Codigo</th>
@@ -18,8 +23,8 @@
             <th scope="col">Teléfono</th>
             <th scope="col">Tipo de IVA</th>
             <th scope="col">CUIT/CUIL</th>
-            <th></th>
-            <th></th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -32,8 +37,8 @@
                 <td>@a.Telefo</td>
                 <td>@a.Tipiva</td>
                 <td>@a.Cuit</td>
-                <td><a href="/proveedores/eliminar/@a.Codigo">Eliminar</a></td>
                 <td><a href="/proveedores/modificar/@a.Codigo">Modificar</a></td>
+                <td><a href="/proveedores/eliminar/@a.Codigo">Eliminar</a></td>
             </tr>
         }
     </tbody>

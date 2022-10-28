@@ -1,7 +1,7 @@
 ﻿@page "/proveedores/modificar/{Codigo}"
 @inject NavigationManager _navigationManager
 @inject IProveedoresServicio _proveedoresServicio
-
+<PageTitle>Modificar proveedores</PageTitle>
 <h3>Modificar Proveedor</h3>
 
 @if (Mensaje != "")
@@ -28,28 +28,28 @@ else
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">Nombre</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.Nombre" autofocus>
         </div>
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">Dirección</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.Direcc">
         </div>
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">Localidad</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.Locali">
         </div>
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">Código Postal</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.CodPos">
         </div>
@@ -63,20 +63,20 @@ else
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">Tipo de IVA</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.Tipiva">
         </div>
     </div>
 
     <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label">Descripción</label>
+        <label class="col-sm-2 col-form-label">C.U.I.L</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" @bind-value="@Proveedor.Cuit">
         </div>
     </div>
 
-    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
     <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 }
 

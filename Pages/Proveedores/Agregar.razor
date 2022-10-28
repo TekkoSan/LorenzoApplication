@@ -2,7 +2,7 @@
 
 @inject IProveedoresServicio _proveedoresServicio
 @inject NavigationManager _navigationManager
-
+<PageTitle>Agregar proveedores</PageTitle>
 <h3>Agregar Proveedor</h3>
 
 @if (Mensaje != "")
@@ -13,62 +13,38 @@
 }
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Id</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Codigo">
-    </div>
+    <input class="form-control" type="text" placeholder="Código" @bind-value="@proveedor.Codigo" readonly>
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Nombre</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Nombre" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Nombre" @bind-value="@proveedor.Nombre" autofocus>
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Dirección</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Direcc" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Dirección" @bind-value="@proveedor.Direcc">
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Localidad</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Locali" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Localidad" @bind-value="@proveedor.Locali">
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Código Postal</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.CodPos" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Código Postal" @bind-value="@proveedor.CodPos">
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Teléfono</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Telefo" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Dirección" @bind-value="@proveedor.Telefo">
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Tipo de IVA</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Tipiva" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="Tipo de IVA" @bind-value="@proveedor.Tipiva">
 </div>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">C.U.I.L.</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" @bind-value="@proveedor.Cuit" autofocus>
-    </div>
+    <input class="form-control" type="text" placeholder="C.U.I.L" @bind-value="@proveedor.Cuit">
 </div>
 
-<button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+<button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
 <button class="btn btn-secondary" @onclick="Cancelar" >Cancelar</button>
 
 @code {

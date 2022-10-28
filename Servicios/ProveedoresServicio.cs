@@ -16,16 +16,20 @@ namespace LorenzoApplication.Servicios
     public class ProveedoresServicio : IProveedoresServicio
     {
         private readonly LorenzoContexto Db;
-        public ProveedoresServicio(LorenzoContexto lorenzoContexto)
+        private readonly INumerarServicio _numerarServicio;
+        public ProveedoresServicio(LorenzoContexto lorenzoContexto, INumerarServicio numerarServicio)
         {
             Db = lorenzoContexto;
+            _numerarServicio = numerarServicio;
         }
         public async Task<bool> Agregar(Provee proveedor)
         {
+            proveedor.Codigo = await _numerarServicio.NuevoCodigo("Proveedor");
             var respuesta = await Db.Provee.Where(X => X.Id.Equals(proveedor.Id)).FirstOrDefaultAsync();
             if (respuesta != null) return false;
             else
             {
+                proveedor = Normalizar(proveedor);
                 Db.Provee.Add(proveedor);
                 await Db.SaveChangesAsync();
                 return true;
@@ -56,12 +60,12 @@ namespace LorenzoApplication.Servicios
         {
             var respuesta = await Db.Provee.Where(X => X.Codigo.Equals(dato.Codigo)).FirstOrDefaultAsync();
             if (respuesta == null) return false;
-            respuesta.Nombre = dato.Nombre;
-            respuesta.Locali = dato.Locali;
-            respuesta.Direcc = dato.Direcc;
-            respuesta.CodPos = dato.CodPos;
-            respuesta.Tipiva = dato.Tipiva;
-            respuesta.Cuit = dato.Cuit;
+            respuesta.Nombre = dato.Nombre.ToUpper();
+            respuesta.Locali = dato.Locali.ToUpper();
+            respuesta.Direcc = dato.Direcc.ToUpper();
+            respuesta.CodPos = dato.CodPos.ToUpper();
+            respuesta.Tipiva = dato.Tipiva.ToUpper();
+            respuesta.Cuit = dato.Cuit.ToUpper();
             Db.Provee.Update(respuesta);
             await Db.SaveChangesAsync();
             return true;
@@ -76,6 +80,17 @@ namespace LorenzoApplication.Servicios
                 respuesta.Add(new ProveeDto() { Codigo = X.Codigo, Nombre = X.Nombre });
             }
             return respuesta;
+        }
+        static private Provee Normalizar(Provee dato)
+        {
+            dato.Nombre = dato.Nombre.ToUpper();
+            dato.Direcc = dato.Direcc.ToUpper();
+            dato.Locali = dato.Locali.ToUpper();
+            dato.Telefo = dato.Telefo.ToUpper();
+            dato.CodPos = dato.CodPos.ToUpper();
+            dato.Tipiva = dato.Tipiva.ToUpper();
+            dato.Cuit = dato.Cuit.ToUpper();
+            return dato;
         }
     }
 }
