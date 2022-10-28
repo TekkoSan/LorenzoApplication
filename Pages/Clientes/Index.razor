@@ -4,11 +4,18 @@
 @inject IClientesServicio _clientesServicio;
 @inject NavigationManager _navigationManager
 
+<PageTitle>Clientes</PageTitle>
+
 <h1>Clientes</h1>
 
 <br/>
 
-<table class="table">
+<button class="btn btn-primary" @onclick="AgregarCliente">Agregar</button>
+
+<br/>
+<br />
+
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th scope="col">Código</th>
@@ -17,8 +24,8 @@
             <th scope="col">Telefono</th>
             <th scope="col">Tipo Iva</th>
             <th scope="col">Reparto</th>
-            <th></th>
-            <th></th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -30,9 +37,9 @@
                 <td>@c.Codpos</td>
                 <td>@c.Telefo</td>
                 <td>@c.TIPIVA</td>
-                <td>@c.Reparto</td>
-                <td><a href="/clientes/eliminar/@c.Codigo">Eliminar</a></td>
+                <td>@c.Reparto</td>              
                 <td><a href="/clientes/modificar/@c.Codigo">Modificar</a></td>
+                <td><a href="/clientes/eliminar/@c.Codigo">Eliminar</a></td>
             </tr>
         }
     </tbody>

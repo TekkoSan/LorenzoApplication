@@ -3,19 +3,24 @@
 @inject IArticulosServicio _articulosServicio;
 @inject NavigationManager _navigationManager
 
+<PageTitle>Artículos</PageTitle>
+
 <h1>Articulos</h1>
 
 <br/>
 
 <button class="btn btn-primary" @onclick="Agregar">Agregar</button>
 
-<table class="table">
+<br />
+<br />
+
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col">Codigo</th>
+            <th scope="col">Código</th>
             <th scope="col">Descripción</th>
-            <th></th>
-            <th></th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -23,9 +28,9 @@
         {
             <tr>
                 <td scope="row">@a.Codigo</td>
-                <td>@a.Descri</td>
-                <td><a href="/articulos/eliminar/@a.Codigo">Eliminar</a></td>
+                <td>@a.Descri</td>               
                 <td><a href="/articulos/modificar/@a.Codigo">Modificar</a></td>
+                <td><a href="/articulos/eliminar/@a.Codigo">Eliminar</a></td>
             </tr>
         }
     </tbody>

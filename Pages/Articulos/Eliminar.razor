@@ -2,6 +2,8 @@
 @inject NavigationManager _navigationManager
 @inject IArticulosServicio _articulosServicio
 
+<PageTitle>Eliminar Artículo</PageTitle>
+
 <h3>Eliminar Articulo</h3>
 
 @if (Mensaje != "")
@@ -35,7 +37,7 @@ else
             <input type="number" readonly class="form-control-plaintext" @bind-value="@Articulo.Descri">
         </div>
     </div>
-    <button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+    <button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
     <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 }
 

@@ -3,6 +3,8 @@
 @inject IArticulosServicio _artículosServicio
 @inject NavigationManager _navigationManager
 
+<PageTitle>Agregar Artículo</PageTitle>
+
 <h3>Agregar Artículo</h3>
 
 @if (Mensaje != "")
@@ -26,7 +28,7 @@
     </div>
 </div>
 
-<button class="btn btn-success" @onclick="Aceptar">Aceptar</button>
+<button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
 <button class="btn btn-secondary" @onclick="Cancelar" >Cancelar</button>
 
 @code {

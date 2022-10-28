@@ -14,18 +14,22 @@ namespace LorenzoApplication.Servicios
     }
     public class ClientesServicio : IClientesServicio
     {
-        private LorenzoContexto Db;
+        private readonly LorenzoContexto Db;
+        private readonly INumerarServicio _numerarServicio;
 
-        public ClientesServicio(LorenzoContexto lorenzoContexto)
+        public ClientesServicio(LorenzoContexto lorenzoContexto, INumerarServicio numerarServicio)
         {
             Db = lorenzoContexto;
+            _numerarServicio = numerarServicio;
         }
         public async Task<bool> Agregar(Cliente cliente)
         {
+            cliente.Codigo = await _numerarServicio.NuevoCodigo("Cliente");
             var respuesta = await Db.Clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
             if (respuesta != null) return false;
             else
             {
+                cliente = Normalizar(cliente);
                 Db.Clientes.Add(cliente);
                 await Db.SaveChangesAsync();
                 return true;
