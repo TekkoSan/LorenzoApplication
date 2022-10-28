@@ -5,12 +5,12 @@ namespace LorenzoApplication.ModeloDto
     {
         public List<Com_Fac> Detalle { get; set; }
         public string NombreProveedor { get; set; }
-        public List<ClienteDto> proveedores { get; set; }
+        public List<ProveeDto> proveedores { get; set; }
         public FacturaCompraDto() : base()
         {
             Detalle = new List<Com_Fac>();
             NombreProveedor = string.Empty;
-            proveedores = new List<ClienteDto>();
+            proveedores = new List<ProveeDto>();
         }
     }
 }

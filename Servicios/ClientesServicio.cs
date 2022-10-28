@@ -7,7 +7,7 @@ namespace LorenzoApplication.Servicios
     {
         public Task<List<ClienteDto>> CargarCombo();
         public Task<List<Cliente>> Listar();
-        public Task<bool> AgregarCliente(Cliente cliente);
+        public Task<bool> Agregar(Cliente cliente);
         public Task<Cliente?> Leer(string cliente);
         public Task<bool> Eliminar(string codigo);
         public Task<bool> Modificar(Cliente cliente);
@@ -20,7 +20,7 @@ namespace LorenzoApplication.Servicios
         {
             Db = lorenzoContexto;
         }
-        public async Task<bool> AgregarCliente(Cliente cliente)
+        public async Task<bool> Agregar(Cliente cliente)
         {
             var respuesta = await Db.Clientes.Where(X => X.Id.Equals(cliente.Id)).FirstOrDefaultAsync();
             if (respuesta != null) return false;

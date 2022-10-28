@@ -19,7 +19,7 @@
             Id = 0;
             Codigo = "";
             Tipo = "";
-            Fecha = new DateTime(1, 1, 1900);
+            Fecha = new DateTime(1900, 1, 1);
             Provee = "";
             Otros = 0;
             Neto = 0;
