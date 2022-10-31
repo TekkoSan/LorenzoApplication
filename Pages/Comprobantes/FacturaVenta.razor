@@ -26,8 +26,18 @@
                 <div class="col-2">
                     <button class="btn btn-secondary" @onclick="MostrarComboCliente">Buscar</button>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
                     <label class="col-form-label">@factura.NombreCliente</label>
+                </div>
+                <div class="col-3">
+                    <div class="form">
+                        <select class="form-select" id="floatingSelect">
+                            <option selected value="0">Factura</option>
+                            <option value="1">Nota de Crédito</option>
+                            <option value="2">Nota de Débito</option>
+                            <option value="3">Pago</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,6 +127,13 @@
         int X = int.Parse(Valor);
         respuesta = X.ToString("D4");
         return respuesta;
+    }
+
+    private async Task TipoDePago(ChangeEventArgs a)
+    {
+        await Task.Delay(1);
+        var opcion = a.Value.ToString();
+
     }
 
 
