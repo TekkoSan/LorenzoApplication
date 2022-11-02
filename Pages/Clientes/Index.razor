@@ -10,7 +10,7 @@
 
 <br/>
 
-<button class="btn btn-primary" @onclick="AgregarCliente">Agregar</button>
+<button class="btn btn-primary" @onclick="Agregar">Agregar</button>
 
 <br/>
 <br />
@@ -52,7 +52,7 @@
     {
         listaClientes = await _clientesServicio.Listar();
     }
-    private async Task AgregarCliente()
+    private async Task Agregar()
     {
         await Task.Delay(1);
         _navigationManager.NavigateTo("/clientes/agregar");

@@ -2,19 +2,26 @@
 @using LorenzoApplication.ModeloDto
 @using LorenzoApplication.Servicios
 @inject IClientesServicio _clienteServicio
-
+@inject ITipoComprobanteServicio _tipoComprobanteServicio
+@inject IArticulosServicio _articulosServicio
 
 <h3>FacturaVenta</h3>
 
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Fecha</label>
-    <div class="col-sm-10">
+    
+    <label class="col-sm-1 col-form-label">Fecha</label>
+    <div class="col-sm-2">
         <input type="date" class="form-control" @bind-value="@factura.Fecha">
     </div>
 
+</div>
+
+<div class="mb-3 row">
+
+
     @if (!BuscarCliente)
     {
-        <label class="col-sm-2 col-form-label">Cliente</label>
+        <label class="col-sm-1 col-form-label">Cliente</label>
         <div class="col-sm-10">
             <div class="row">
                 <div class="col-2">
@@ -29,22 +36,12 @@
                 <div class="col-3">
                     <label class="col-form-label">@factura.NombreCliente</label>
                 </div>
-                <div class="col-3">
-                    <div class="form">
-                        <select class="form-select" id="floatingSelect">
-                            <option selected value="0">Factura</option>
-                            <option value="1">Nota de Crédito</option>
-                            <option value="2">Nota de Débito</option>
-                            <option value="3">Pago</option>
-                        </select>
-                    </div>
-                </div>
             </div>
         </div>
     }
     else
     {
-        <label class="col-sm-2 col-form-label">Cliente</label>
+        <label class="col-sm-1 col-form-label">Cliente</label>
         <div class="col-sm-10">
 
             <select class="form-select" @onchange="OnChangeComboCliente">
@@ -64,20 +61,154 @@
 
     }
 
+</div>
 
+
+<div class="mb-3 row">
+
+    <label class="col-sm-1 col-form-label">Tipo</label>
+
+    <div class="col-3">
+
+        <select class="form-select" @onchange="OnChangeTipo">
+            @foreach (var X in TiposDeComprobantes)
+            {
+                <option value="@X.Codigo">@X.Descripcion</option>
+            }
+        </select>
+    </div>
 
 </div>
+
+@if (factura.Tipo == "2" || factura.Tipo == "1")
+{
+    <div class="mb-3 row">
+        <label class="col-sm-1 col-form-label">Descripcion</label>
+        <div class="col-3">
+            <input type="text" class="form-control" @bind-value="@factura.Descri" required>
+
+        </div>
+    </div>
+   
+}
+
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Articulo</th>
+            <th>Descripcion</th>
+            <th>Peso</th>
+            <th>Precio</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in factura.Detalle)
+        {
+            <tr>
+                <td>@item.Articulo</td>
+                <td>@item.Descri</td>
+                <td class="text-end">@item.Peso.ToString("#,##0.00")</td>
+                <td class="text-end">@item.Precio.ToString("#,##0.00")</td>
+                <td class="text-end">@item.Total().ToString("#,##0.00")</td>
+                <td><button class="btn btn-danger" @onclick="() => Eliminar(item.Articulo)" >Eliminar</button></td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <input type="number"
+                       class="form-control"
+                       value="@Item.Articulo"
+                       @onchange="ItemArticuloOnChange" />
+            </td>
+            <td>
+                <input type="text" class="form-control" @bind-value="Item.Descri" disabled />
+            </td>
+            <td>
+                <input type="number" class="form-control" @bind-value="Item.Peso" />
+            </td>
+            <td>
+                <input type="number" class="form-control" @bind-value="Item.Precio" />
+            </td>
+            <td>
+                <input type="number" class="form-control" value="@Item.Total()" disabled />
+            </td>
+            <td>
+                <button class="btn btn-info" @onclick="GuardarItem">Guardar</button>
+            </td>
+        </tr>
+
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4"></td>
+            <td class="text-end">@factura.Total.ToString("#,##0.00")</td>
+        </tr>
+    </tfoot>
+    
+</table>
+
+
 
 
 @code {
     private FacturaVentaDto factura { get; set; } = new FacturaVentaDto();
     private bool BuscarCliente { get; set; } = false;
+    private List<TipoCompobante> TiposDeComprobantes { get; set; } = new List<TipoCompobante>();
 
+    private FacturaVentaDetalleDto Item { get; set; } = new FacturaVentaDetalleDto();
+
+    private void Eliminar(string articulo)
+    {
+        var item = factura.Detalle.Where(X => X.Articulo.Equals(articulo)).FirstOrDefault();
+        if (item != null)
+        {
+            factura.Detalle.Remove(item);
+            CalcularTotal();        
+        }
+    }
+
+    private void CalcularTotal()
+    {
+        factura.Total = 0;
+        foreach (var X in factura.Detalle)
+        {
+            factura.Total += X.Total();
+        }
+
+    }
+
+
+
+    private void GuardarItem()
+    {
+        factura.Detalle.Add(Item);
+        Item = new FacturaVentaDetalleDto();
+        Item.Articulo = "";
+        CalcularTotal();
+
+    }
+
+
+    private async Task ItemArticuloOnChange(ChangeEventArgs e)
+    {
+        var codigo = int.Parse(e.Value.ToString()).ToString("D4");
+        Item.Articulo = codigo;
+        var articulo = await _articulosServicio.Leer(codigo);
+        Item.Descri = articulo.Descri;
+        StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
         factura.Fecha = DateTime.Now.Date;
         factura.clientes = await _clienteServicio.CargarCombo();
+
+        TiposDeComprobantes = await _tipoComprobanteServicio.Listar();
+
     }
 
     private async Task MostrarComboCliente()
@@ -85,6 +216,16 @@
         await Task.Delay(1);
         BuscarCliente = true;
     }
+
+    private async Task OnChangeTipo(ChangeEventArgs e)
+    {
+        try
+        {
+            factura.Tipo = e.Value.ToString();
+        }
+        catch { }        
+    }
+
 
     private async Task OnChangeComboCliente(ChangeEventArgs e)
     {

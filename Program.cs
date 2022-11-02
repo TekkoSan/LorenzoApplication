@@ -18,6 +18,8 @@ builder.Services.AddScoped<IArticulosServicio, ArticulosServicio>();
 builder.Services.AddScoped<IClientesServicio, ClientesServicio>();
 builder.Services.AddScoped<IProveedoresServicio, ProveedoresServicio>();
 builder.Services.AddScoped<INumerarServicio, NumerarServicio>();
+builder.Services.AddScoped<ITipoComprobanteServicio, TipoComprobanteServicio>();
+
 
 var app = builder.Build();
 
