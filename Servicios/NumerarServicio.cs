@@ -4,7 +4,7 @@ namespace LorenzoApplication.Servicios
 {
     public interface INumerarServicio
     {
-        Task<string> NuevoCodigo(string numerador);
+        Task<string> NuevoCodigo(string numerador, string formato = "D04");
     }
     public class NumerarServicio : INumerarServicio
     {
@@ -13,7 +13,7 @@ namespace LorenzoApplication.Servicios
         {
             _db = db;
         }
-        public async Task<string> NuevoCodigo(string numerador)
+        public async Task<string> NuevoCodigo(string numerador, string formato = "D04")
         {
             numerador = numerador.ToUpper();
             var ultimo = await _db.Numerar.Where(X => X.Numerador.Equals(numerador)).FirstOrDefaultAsync();
@@ -30,7 +30,7 @@ namespace LorenzoApplication.Servicios
                 _db.Update(ultimo);
             }
             await _db.SaveChangesAsync();
-            return ultimo.Valor.ToString("D04");
+            return ultimo.Valor.ToString(formato);
         }
     }
 }
