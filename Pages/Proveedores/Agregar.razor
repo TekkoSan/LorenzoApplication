@@ -33,11 +33,16 @@
 </div>
 
 <div class="mb-3 row">
-    <input class="form-control" type="text" placeholder="Dirección" @bind-value="@proveedor.Telefo">
+    <input class="form-control" type="text" placeholder="Teléfono" @bind-value="@proveedor.Telefo">
 </div>
 
 <div class="mb-3 row">
-    <input class="form-control" type="text" placeholder="Tipo de IVA" @bind-value="@proveedor.Tipiva">
+    <select class="form-select" @onchange="OnChangeTipiva">
+        <option value="1">Responsable Inscripto</option>
+        <option value="2">Monotributista</option>
+        <option value="3">Excento</option>
+        <option value="0">No especificado</option>
+    </select>
 </div>
 
 <div class="mb-3 row">
@@ -50,14 +55,12 @@
 @code {
     private Provee proveedor { get; set; } = new Provee();
     private string Mensaje { get; set; } = "";
-
-
+    private string TipoImpuesto { get; set; } = "";
     private async Task Cancelar()
     {
         await Task.Delay(1);
         _navigationManager.NavigateTo("/proveedores/index");
     }
-
     private async Task Aceptar()
     {
         Mensaje = "";
@@ -71,5 +74,10 @@
 
         await _proveedoresServicio.Agregar(proveedor);
         _navigationManager.NavigateTo("/proveedores/index");
+    }
+    private async Task OnChangeTipiva(ChangeEventArgs e)
+    {
+        await Task.Delay(1);
+        proveedor.Tipiva = e.Value.ToString();
     }
 }

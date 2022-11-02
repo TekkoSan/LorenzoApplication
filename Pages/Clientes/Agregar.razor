@@ -39,16 +39,21 @@
 </div>
 
 <div class="mb-3 row">
-    <input class="form-control" type="text" placeholder="Tipo de IVA" aria-label="default input example" @bind-value="cliente.TIPIVA">
+    <select class="form-select" @onchange="OnChangeTipiva">
+        <option value="1">Responsable Inscripto</option>
+        <option value="2">Monotributista</option>
+        <option value="3">Excento</option>
+        <option value="0">No especificado</option>
+    </select>
 </div>
 
 <div class="mb-3 row">
     <input class="form-control" type="number" placeholder="CUIT" aria-label="default input example" @bind-value="cliente.CUIT">
 </div>
 
-
-
-
+<div class="mb-3 row">
+    <input class="form-control" type="number" placeholder="Reparto" aria-label="default input example" @bind-value="cliente.Reparto">
+</div>
 
 <button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
 <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
@@ -78,5 +83,10 @@
 
         await _clientesServicio.Agregar(cliente);
         _navigationManager.NavigateTo("/clientes/index");
+    }
+    private async Task OnChangeTipiva(ChangeEventArgs e)
+    {
+        await Task.Delay(1);
+        cliente.TIPIVA = e.Value.ToString();
     }
 }

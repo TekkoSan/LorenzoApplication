@@ -86,8 +86,6 @@ namespace LorenzoApplication.Servicios
             dato.Nombre = dato.Nombre.ToUpper();
             dato.Direcc = dato.Direcc.ToUpper();
             dato.Locali = dato.Locali.ToUpper();
-            dato.Telefo = dato.Telefo.ToUpper();
-            dato.CodPos = dato.CodPos.ToUpper();
             dato.Tipiva = dato.Tipiva.ToUpper();
             dato.Cuit = dato.Cuit.ToUpper();
             return dato;

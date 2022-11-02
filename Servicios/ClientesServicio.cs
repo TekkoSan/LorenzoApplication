@@ -16,7 +16,6 @@ namespace LorenzoApplication.Servicios
     {
         private readonly LorenzoContexto Db;
         private readonly INumerarServicio _numerarServicio;
-
         public ClientesServicio(LorenzoContexto lorenzoContexto, INumerarServicio numerarServicio)
         {
             Db = lorenzoContexto;
